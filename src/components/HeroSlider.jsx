@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useCallback } from 'react'
+import Button from './Button'
 
 const HeroSlider = props => {
 
@@ -81,7 +82,13 @@ const HeroSliderItem = props => (
             </div>
             <div className='hero-slider__item__info__btn'>
                 <Link to={props.item.path} >
-                    <button>Xem chi tiết</button>
+                    <Button
+                        backgroundColor={props.item.color}
+                        icon="bx bx-cart"
+                        animate={true}
+                    >
+                        Xem chi tiết
+                    </Button>
                 </Link>
             </div>
         </div>
