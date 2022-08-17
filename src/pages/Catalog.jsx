@@ -1,8 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 
 import Helmet from '../components/Helmet'
-import Gird from '../components/Grid'
-import ProductCard from '../components/ProductCard'
 import CheckBox from '../components/CheckBox'
 
 import productData from '../assets/fake-data/products'
@@ -10,6 +8,7 @@ import category from '../assets/fake-data/category'
 import colors from '../assets/fake-data/product-color'
 import size from '../assets/fake-data/product-size'
 import Button from '../components/Button'
+import InfinityList from '../components/InfinityList'
 
 function Catalog() {
 
@@ -29,7 +28,6 @@ function Catalog() {
     if (checked) {
       switch (type) {
         case "CATEGORY":
-          console.log('checked ',type);
           setFilter({ ...filter, category: [...filter.category, item.categorySlug] })
           break
         case "COLOR":
@@ -43,7 +41,6 @@ function Catalog() {
     } else {
       switch (type) {
         case "CATEGORY":
-          console.log('no checked ',type);
           const newCategory = filter.category.filter(e => e !== item.categorySlug)
           setFilter({ ...filter, category: newCategory })
           break
@@ -93,10 +90,17 @@ function Catalog() {
     updateProducts()
   }, [updateProducts])
 
+  const filterRef = useRef(null)
+
+  const showHideFilter = () => filterRef.current.classList.toggle('active')
+
   return (
     <Helmet title='Sản phẩm'>
       <div className="catalog">
-        <div className="catalog__filter">
+        <div className="catalog__filter" ref={filterRef}>
+          <div className="catalog_filter_close" onClick={() => showHideFilter()} >
+            <i className='bx bx-left-arrow-alt'></i>
+          </div>
           <div className="catalog__filter__widget">
             <div className="catalog__filter__widget__title">
               danh mục sản phẩm
@@ -156,30 +160,17 @@ function Catalog() {
 
           <div className="catalog__filter__widget">
             <div className="catalog__filter__widget__content">
-              <Button size="sm" onclick={clearFilter} >xóa bộ lọc</Button>
+              <Button size="sm" onClick={clearFilter} >xóa bộ lọc</Button>
             </div>
           </div>
         </div>
+        <div className="catalog__filter__toggle">
+          <Button size="sm" onClick={() => showHideFilter()} >bộ lọc</Button>
+        </div>
         <div className="catalog__content">
-          <Gird
-            col={3}
-            mdCol={2}
-            smCol={1}
-            gap={20}
-          >
-            {
-              products.map((item, index) => (
-                <ProductCard
-                  key={index}
-                  img01={item.image01}
-                  img02={item.image02}
-                  name={item.title}
-                  price={Number(item.price)}
-                  slug={item.slug}
-                />
-              ))
-            }
-          </Gird>
+          <InfinityList
+            data={products}
+          />
         </div>
       </div>
     </Helmet>
