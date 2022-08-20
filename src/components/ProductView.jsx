@@ -3,11 +3,17 @@ import PropTypes from 'prop-types'
 
 import { withRouter } from 'react-router'
 
+import { useDispatch } from 'react-redux'
+
+import { addItem } from '../redux/shopping-cart/cartItemsSlide'
+import { remove } from '../redux/product-modal/productModalSlice'
 
 import Button from './Button'
 import numberWithCommas from '../utils/numberWithCommas'
 
 const ProductView = props => {
+
+    const dispatch = useDispatch()
 
     let product = props.product
 
@@ -58,11 +64,38 @@ const ProductView = props => {
     }
 
     const addToCart = () => {
-        if (check()) console.log({ color, size, quantity });
+        if (check()) {
+            let newItem = {
+                slug: product.slug,
+                color: color,
+                size: size,
+                price: product.price,
+                quantity: quantity
+            }
+            if (dispatch(addItem(newItem))) {
+                alert('Success')
+            } else {
+                alert('Fail')
+            }
+        }
     }
 
     const goToCart = () => {
-        if (check()) props.history.push('/cart')
+        if (check()) {
+            let newItem = {
+                slug: product.slug,
+                color: color,
+                size: size,
+                price: product.price,
+                quantity: quantity
+            }
+            if (dispatch(addItem(newItem))) {
+                dispatch(remove())
+                props.history.push('/cart')
+            } else {
+                alert('Fail')
+            }
+        }
     }
 
     return (

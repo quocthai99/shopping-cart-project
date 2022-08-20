@@ -6,6 +6,8 @@
     font-weight: 600;
     text-transform: uppercase;
     cursor: pointer;
+    overflow: hidden;
+    position: relative;
 
     @include mobile {
         font-size: 1rem;
@@ -14,7 +16,7 @@
     &__txt,
     &__icon {
         display: block;
-        transition: transform .5s ease;
+        transition: transform 0.5s ease;
     }
 
     &__txt {
@@ -45,6 +47,10 @@
     }
 
     &-sm &__txt {
-        padding: .7rem 1.5rem;
+        padding: 0.7rem 1.5rem;
+    }
+
+    &-block {
+        width: 100%;
     }
 }
